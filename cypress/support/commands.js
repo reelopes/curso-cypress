@@ -23,3 +23,18 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('getToken', (user,passwd) => {
+    cy.request({
+        method:'POST',
+        url: 'https://barrigarest.wcaquino.me/signin',
+        body: {
+            email: user,
+            redirecionar: false,
+            senha: passwd
+        }
+    }).its('body.token').should('not.be.empty')
+    .then(token => {
+        return token
+    })
+})
