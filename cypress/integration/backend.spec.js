@@ -11,7 +11,7 @@ describe('Should test at API level', () => {
                 method:'GET',
                 url: 'https://barrigarest.wcaquino.me/reset',
                 headers: {
-                    Authorization: `JWT ${token} `
+                    Authorization: `JWT ${token}`
                 }
             })
         })
@@ -27,7 +27,6 @@ describe('Should test at API level', () => {
                 url: 'https://barrigarest.wcaquino.me/contas',
                 headers: {
                     Authorization: `JWT ${token} `
-                    // Authorization: 'JWT ' + token
                 },
                 body: {
                     nome: 'Conta via rest'

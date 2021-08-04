@@ -116,14 +116,3 @@ describe('Work with basic elements', () => {
     })
 
 })
-
-
-
-/* describe('Work with basic elements', () => {
-    before(() => {
-        cy.visit('https://wcaquino.me/cypress/frame.html')
-    })
-    
-    it('Externo', () => {
-    })
-}) */
