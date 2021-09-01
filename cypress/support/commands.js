@@ -38,3 +38,10 @@ Cypress.Commands.add('getToken', (user,passwd) => {
         return token
     })
 })
+
+Cypress.Commands.add('clickAlert', (locator, message) => {
+    cy.get(locator).click()
+    cy.on('window:alert', msg => {
+        expect(msg).to.be.equal(message)
+    })
+})

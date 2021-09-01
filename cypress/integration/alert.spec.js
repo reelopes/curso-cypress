@@ -17,6 +17,10 @@ describe('Work with alert', () => {
         })
     })
     
+    it('Alert Com Command', () => {
+        cy.clickAlert('#alert', 'Alert Simples')
+    })
+
     it('Alert com Mock', () => {
         const stub = cy.stub().as('alerta')
         
