@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('Dinamic tests', () => {
 
     //Executa antes da execução do primeiro teste
