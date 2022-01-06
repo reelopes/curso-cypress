@@ -24,9 +24,11 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('getToken', (user,passwd) => {
+import loc from './locators.js'
+
+Cypress.Commands.add('getToken', (user, passwd) => {
     cy.request({
-        method:'POST',
+        method: 'POST',
         url: 'https://barrigarest.wcaquino.me/signin',
         body: {
             email: user,
@@ -34,9 +36,9 @@ Cypress.Commands.add('getToken', (user,passwd) => {
             senha: passwd
         }
     }).its('body.token').should('not.be.empty')
-    .then(token => {
-        return token
-    })
+        .then(token => {
+            return token
+        })
 })
 
 Cypress.Commands.add('clickAlert', (locator, message) => {
@@ -44,4 +46,17 @@ Cypress.Commands.add('clickAlert', (locator, message) => {
     cy.on('window:alert', msg => {
         expect(msg).to.be.equal(message)
     })
+})
+
+Cypress.Commands.add('login', (user, passwd) => {
+    cy.visit('https://barrigareact.wcaquino.me/')
+    cy.get(loc.LOGIN.USER).type('ree.lopes@hotmail.com')
+    cy.get(loc.LOGIN.PASSWORD).type('mudar@123')
+    cy.get(loc.LOGIN.BTN_LOGIN).click()
+    cy.get(loc.MESSAGE).should('contain', 'Bem vindo')
+})
+
+Cypress.Commands.add('resetApp', () => {
+    cy.get(loc.MENU.SETTINGS).click()
+    cy.get(loc.MENU.RESET).click()
 })
