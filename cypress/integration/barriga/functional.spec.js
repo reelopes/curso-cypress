@@ -31,7 +31,7 @@ describe('Should test at functional level', () => {
         cy.inserirConta('Conta alterada')
         cy.get(loc.MESSAGE).should('contain', 'Request failed with status code 400')
     })
-    
+
     it('Should Create A Transaction', () => {
         cy.get(loc.MENU.MOVIMENTACAO).click()
         cy.get(loc.MOVIMENTACAO.DESCRICAO).type('Desc')
@@ -49,6 +49,12 @@ describe('Should test at functional level', () => {
     it('Should Get Balance', () => {
         cy.get(loc.MENU.HOME).click()
         cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Conta alterada')).should('contain', '123,00')
+    })
+
+    it('Should Remove a Transaction', () => {
+        cy.get(loc.MENU.EXTRATO).click()
+        cy.xpath(loc.EXTRATO.FN_XP_BTN_REMOVER_ELEMENTO('Desc')).click()
+        cy.get(loc.MESSAGE).should('contain', 'Movimentação removida com sucesso!')
     })
 
     // it('Should Delete An Account', () => {
