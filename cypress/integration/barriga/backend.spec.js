@@ -30,10 +30,9 @@ describe('Should test at API level', () => {
             expect(res.body).to.have.property('id')
             expect(res.body).to.have.property('nome', 'Conta via rest')
         })
-
     })
 
-    it.only('Should Update An Account', () => {
+    it('Should Update An Account', () => {
         cy.request({
             method: 'GET',
             url: '/contas',
@@ -55,23 +54,25 @@ describe('Should test at API level', () => {
 
             cy.get('@response').its('status').should('be.equal', 200)
         })
-
-
-        // cy.request({
-        //     method: 'PUT',
-        //     url: '/contas/40977',
-        //     headers: {
-        //         Authorization: `JWT ${token} `
-        //     },
-        //     body: {
-        //         nome: 'conta alterada via rest'
-        //     }
-        // }).as('response')
-
-        // cy.get('@response').its('status').should('be.equal', 201)
     })
 
-    it('Should Not Create An Account With The Same Name', () => {
+    it.only('Should Not Create An Account With The Same Name', () => {
+        cy.request({
+            method: 'POST',
+            url: '/contas',
+            headers: {
+                Authorization: `JWT ${token} `
+            },
+            body: {
+                nome: 'Conta mesmo nome'
+            },
+            failOnStatusCode: false
+        }).as('response')
+
+        cy.get('@response').then(res => {
+            expect(res.status).to.be.equal(400)
+            expect(res.body.error).to.be.equal('Já existe uma conta com esse nome!')
+        })
     })
 
     it('Should Create A Transaction', () => {
