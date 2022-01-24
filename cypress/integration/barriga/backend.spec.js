@@ -33,17 +33,10 @@ describe('Should test at API level', () => {
     })
 
     it('Should Update An Account', () => {
-        cy.request({
-            method: 'GET',
-            url: '/contas',
-            headers: {
-                Authorization: `JWT ${token} `
-            },
-            qs: { nome: 'Conta para alterar' }
-        }).then(res => {
+        cy.getContaByName(token, 'Conta para alterar').then(contaId => {
             cy.request({
                 method: 'PUT',
-                url: `/contas/${res.body[0].id}`,
+                url: `/contas/${contaId}`,
                 headers: {
                     Authorization: `JWT ${token} `
                 },
@@ -56,7 +49,7 @@ describe('Should test at API level', () => {
         })
     })
 
-    it.only('Should Not Create An Account With The Same Name', () => {
+    it('Should Not Create An Account With The Same Name', () => {
         cy.request({
             method: 'POST',
             url: '/contas',
@@ -76,6 +69,28 @@ describe('Should test at API level', () => {
     })
 
     it('Should Create A Transaction', () => {
+        cy.getContaByName(token, 'Conta para movimentacoes').then(contaId => {
+            cy.request({
+                method: 'POST',
+                url: '/transacoes',
+                headers: {
+                    Authorization: `JWT ${token} `
+                },
+                body: {
+                    conta_id: contaId,
+                    data_pagamento: Cypress.moment().add({ days: 1 }).format('DD/MM/YYYY'),
+                    data_transacao: Cypress.moment().format('DD/MM/YYYY'),
+                    descricao: "desc",
+                    envolvido: "inter",
+                    status: true,
+                    tipo: "REC",
+                    valor: "123"
+                }
+            }).as('response')
+        })
+
+        cy.get('@response').its('status').should('be.equal', 201)
+        cy.get('@response').its('body.id').should('exist')
     })
 
     it('Should Get Balance', () => {
