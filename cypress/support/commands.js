@@ -57,28 +57,29 @@ Cypress.Commands.add('getToken', (user, passwd) => {
         }
     }).its('body.token').should('not.be.empty')
         .then(token => {
+            Cypress.env('token', token)
             return token
         })
 })
 
-Cypress.Commands.add('resetRest', (token) => {
+Cypress.Commands.add('resetRest', () => {
     //cy.getToken('r@r', 'r').then(token => {
     cy.request({
         method: 'GET',
         url: '/reset',
         headers: {
-            Authorization: `JWT ${token}`
+            // Authorization: `JWT ${token}`
         }
     }).its('status').should('be.equal', 200)
     //})
 })
 
-Cypress.Commands.add('getContaByName', (token, name) => {
+Cypress.Commands.add('getContaByName', (name) => {
     cy.request({
         method: 'GET',
         url: '/contas',
         headers: {
-            Authorization: `JWT ${token} `
+            // Authorization: `JWT ${token} `
         },
         qs: { nome: name }
     }).then(res => {
@@ -86,12 +87,12 @@ Cypress.Commands.add('getContaByName', (token, name) => {
     })
 })
 
-Cypress.Commands.add('getSaldo', (token, nomeConta) => {
+Cypress.Commands.add('getSaldo', (nomeConta) => {
     cy.request({
         method: 'GET',
         url: '/saldo',
         headers: {
-            Authorization: `JWT ${token}`
+            // Authorization: `JWT ${token}`
         }
     }).then(res => {
         let saldoConta = null
@@ -100,4 +101,16 @@ Cypress.Commands.add('getSaldo', (token, nomeConta) => {
         })
         return saldoConta
     })
+})
+
+Cypress.Commands.overwrite('request', (originalFn, ...options) => {
+    if (options.length == 1) {
+        if (Cypress.env('token')) {
+            options[0].headers = {
+                Authorization: `JWT ${Cypress.env('token')}`
+            }
+        }
+    }
+
+    return originalFn(...options)
 })

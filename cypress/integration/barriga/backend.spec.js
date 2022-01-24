@@ -1,16 +1,17 @@
 /// <reference types="cypress" />
 
 describe('Should test at API level', () => {
-    let token
+    // let token
 
     before(() => {
-        cy.getToken('r@r', 'r').then(tkn => {
-            token = tkn
-        })
+        cy.getToken('r@r', 'r')
+        // .then(tkn => {
+        //     token = tkn
+        // })
     })
 
     beforeEach(() => {
-        cy.resetRest(token)
+        cy.resetRest()
     })
 
     it('Should create an account', () => {
@@ -18,7 +19,7 @@ describe('Should test at API level', () => {
             method: 'POST',
             url: '/contas',
             headers: {
-                Authorization: `JWT ${token}`
+                // Authorization: `JWT ${token}`
             },
             body: {
                 nome: 'Conta via rest'
@@ -33,12 +34,12 @@ describe('Should test at API level', () => {
     })
 
     it('Should Update An Account', () => {
-        cy.getContaByName(token, 'Conta para alterar').then(contaId => {
+        cy.getContaByName('Conta para alterar').then(contaId => {
             cy.request({
                 method: 'PUT',
                 url: `/contas/${contaId}`,
                 headers: {
-                    Authorization: `JWT ${token}`
+                    // Authorization: `JWT ${token}`
                 },
                 body: {
                     nome: 'conta alterada via rest'
@@ -54,7 +55,7 @@ describe('Should test at API level', () => {
             method: 'POST',
             url: '/contas',
             headers: {
-                Authorization: `JWT ${token}`
+                // Authorization: `JWT ${token}`
             },
             body: {
                 nome: 'Conta mesmo nome'
@@ -69,12 +70,12 @@ describe('Should test at API level', () => {
     })
 
     it('Should Create A Transaction', () => {
-        cy.getContaByName(token, 'Conta para movimentacoes').then(contaId => {
+        cy.getContaByName('Conta para movimentacoes').then(contaId => {
             cy.request({
                 method: 'POST',
                 url: '/transacoes',
                 headers: {
-                    Authorization: `JWT ${token}`
+                    // Authorization: `JWT ${token}`
                 },
                 body: {
                     conta_id: contaId,
@@ -94,7 +95,7 @@ describe('Should test at API level', () => {
     })
 
     it('Should Get Balance', () => {
-        cy.getSaldo(token, 'Conta para saldo').then(saldoConta => {
+        cy.getSaldo('Conta para saldo').then(saldoConta => {
             expect(saldoConta).to.be.equal('534.00')
         })
 
@@ -102,7 +103,7 @@ describe('Should test at API level', () => {
             method: 'GET',
             url: '/transacoes',
             headers: {
-                Authorization: `JWT ${token}`
+                // Authorization: `JWT ${token}`
             },
             qs: { descricao: 'Movimentacao 1, calculo saldo' }
         }).then(res => {
@@ -110,7 +111,7 @@ describe('Should test at API level', () => {
                 method: 'PUT',
                 url: `/transacoes/${res.body[0].id}`,
                 headers: {
-                    Authorization: `JWT ${token}`
+                    // Authorization: `JWT ${token}`
                 },
                 body: {
                     status: true,
@@ -123,7 +124,7 @@ describe('Should test at API level', () => {
                 }
             }).its('status').should('be.equal', 200)
 
-            cy.getSaldo(token, 'Conta para saldo').then(saldoConta => {
+            cy.getSaldo('Conta para saldo').then(saldoConta => {
                 expect(saldoConta).to.be.equal('4034.00')
             })
         })
@@ -134,7 +135,7 @@ describe('Should test at API level', () => {
             method: 'GET',
             url: '/transacoes',
             headers: {
-                Authorization: `JWT ${token}`
+                // Authorization: `JWT ${token}`
             },
             qs: { descricao: 'Movimentacao para exclusao' }
         }).then(res => {
@@ -142,7 +143,7 @@ describe('Should test at API level', () => {
                 method: 'DELETE',
                 url: `/transacoes/${res.body[0].id}`,
                 headers: {
-                    Authorization: `JWT ${token}`
+                    // Authorization: `JWT ${token}`
                 }
             }).its('status').should('be.equal', 204)
         })
