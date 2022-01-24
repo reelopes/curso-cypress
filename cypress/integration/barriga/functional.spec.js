@@ -12,6 +12,7 @@ describe('Should test at functional level', () => {
     beforeEach(() => {
         cy.get(loc.MENU.HOME).click()
         cy.resetApp()
+        cy.wait(1000)
     })
 
     it('Should Create An Account', () => {
@@ -62,6 +63,8 @@ describe('Should test at functional level', () => {
         cy.get(loc.MOVIMENTACAO.BTN_SALVAR).click()
         cy.get(loc.MESSAGE).should('contain', 'sucesso')
 
+
+        cy.wait(1000)
         cy.get(loc.MENU.HOME).click()
         cy.xpath(loc.SALDO.FN_XP_SALDO_CONTA('Conta para saldo')).should('contain', '4.034,00')
     })
