@@ -6,24 +6,17 @@ describe('Should test at API level', () => {
     before(() => {
         cy.getToken('r@r', 'r').then(tkn => {
             token = tkn
-        }).then(() => {
-            cy.request({
-                method: 'GET',
-                url: 'https://barrigarest.wcaquino.me/reset',
-                headers: {
-                    Authorization: `JWT ${token}`
-                }
-            })
         })
     })
 
     beforeEach(() => {
+        cy.resetRest(token)
     })
 
     it('Should create an account', () => {
         cy.request({
             method: 'POST',
-            url: 'https://barrigarest.wcaquino.me/contas',
+            url: '/contas',
             headers: {
                 Authorization: `JWT ${token} `
             },
