@@ -85,3 +85,19 @@ Cypress.Commands.add('getContaByName', (token, name) => {
         return res.body[0].id
     })
 })
+
+Cypress.Commands.add('getSaldo', (token, nomeConta) => {
+    cy.request({
+        method: 'GET',
+        url: '/saldo',
+        headers: {
+            Authorization: `JWT ${token}`
+        }
+    }).then(res => {
+        let saldoConta = null
+        res.body.forEach(c => {
+            if (c.conta === nomeConta) saldoConta = c.saldo
+        })
+        return saldoConta
+    })
+})
