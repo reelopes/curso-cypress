@@ -35,8 +35,8 @@ Cypress.Commands.add('clickAlert', (locator, message) => {
 
 Cypress.Commands.add('login', (user, passwd) => {
     cy.visit('https://barrigareact.wcaquino.me/')
-    cy.get(loc.LOGIN.USER).type('ree.lopes@hotmail.com')
-    cy.get(loc.LOGIN.PASSWORD).type('mudar@123')
+    cy.get(loc.LOGIN.USER).type(user)
+    cy.get(loc.LOGIN.PASSWORD).type(passwd)
     cy.get(loc.LOGIN.BTN_LOGIN).click()
     cy.get(loc.MESSAGE).should('contain', 'Bem vindo')
 })
@@ -103,6 +103,8 @@ Cypress.Commands.add('getSaldo', (nomeConta) => {
     })
 })
 
+// Este comando faz com que o cabecalho Authorization seja inserido automaticamente
+// sempre que o request for chamado. Por isso, todos os cabecalhos estao comentados.
 Cypress.Commands.overwrite('request', (originalFn, ...options) => {
     if (options.length == 1) {
         if (Cypress.env('token')) {
