@@ -72,7 +72,6 @@ describe('Work with basic elements', () => {
 
         cy.get('#formComidaVegetariana')
             .should("be.checked")
-
     })
 
     it('Combo', () => {

@@ -21,40 +21,81 @@ describe('Should test at functional level', () => {
                 token: 'Uma string muito grande que não deveria ser aceito mas na verdade, vai'
             }
         }).as('signin')
+
         cy.route({
             method: 'GET',
             url: '/saldo',
-            response: [
-                {
-                    conta_id: 999,
-                    conta: 'Carteira',
-                    saldo: '100.00'
-                },
-                {
-                    conta_id: 9909,
-                    conta: 'Banco',
-                    saldo: '10000000.00'
-                }
-            ]
+            response: [{
+                conta_id: 999,
+                conta: 'Carteira',
+                saldo: '100.00'
+            },
+            {
+                conta_id: 9909,
+                conta: 'Banco',
+                saldo: '10000000.00'
+            }]
         }).as('saldo')
+
         cy.login('ree.lopes@hotmail.com', 'mudar@123')
     })
 
     beforeEach(() => {
         cy.get(loc.MENU.HOME).click()
-        cy.resetApp()
-        cy.wait(1000)
+        // cy.resetApp()
     })
 
     it('Should Create An Account', () => {
+        cy.route({
+            method: 'GET',
+            url: '/contas',
+            response: [
+                { id: 1, nome: 'Carteira', visivel: true, usuario_id: 1 },
+                { id: 2, nome: 'Banco', visivel: true, usuario_id: 1 },
+            ]
+        }).as('contas')
+
+        cy.route({
+            method: 'POST',
+            url: '/contas',
+            response: { id: 3, nome: 'Conta de teste', visivel: true, usuario_id: 1 }
+        }).as('saveConta')
+
         cy.acessarMenuContas()
+
+        cy.route({
+            method: 'GET',
+            url: '/contas',
+            response: [
+                { id: 1, nome: 'Carteira', visivel: true, usuario_id: 1 },
+                { id: 2, nome: 'Banco', visivel: true, usuario_id: 1 },
+                { id: 3, nome: 'Conta de teste', visivel: true, usuario_id: 1 },
+            ]
+        }).as('contasSave')
+
         cy.inserirConta('Conta de teste')
         cy.get(loc.MESSAGE).should('contain', 'Conta inserida com sucesso!')
     })
 
-    it('Should Update An Account', () => {
+    it.only('Should Update An Account', () => {
+
+        cy.route({
+            method: 'GET',
+            url: '/contas',
+            response: [
+                { id: 1, nome: 'Carteira', visivel: true, usuario_id: 1 },
+                { id: 2, nome: 'Banco', visivel: true, usuario_id: 1 },
+            ]
+        }).as('contas')
+
+        cy.route({
+            method: 'PUT',
+            url: '/contas/**',
+            response: { id: 1, nome: 'Conta alterada', visivel: true, usuario_id: 1 }
+        }).as('contas')
+
         cy.acessarMenuContas()
-        cy.xpath(loc.CONTAS.FN_XP_BTN_ALTERAR('Conta para alterar')).click()
+        cy.xpath(loc.CONTAS.FN_XP_BTN_ALTERAR('Carteira')).click()
         cy.get(loc.CONTAS.NOME)
             .clear()
             .type('Conta alterada')
