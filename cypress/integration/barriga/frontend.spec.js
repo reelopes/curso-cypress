@@ -4,7 +4,7 @@ import loc from '../../support/locators.js'
 import '../../support/commandsContas.js'
 
 describe('Should test at functional level', () => {
-    //Executa após todos os testes
+    //Executa após a finalização dos testes
     after(() => {
         cy.clearLocalStorage()
     })
