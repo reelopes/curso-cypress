@@ -37,7 +37,7 @@ const buildEnv = () => {
 
     cy.route({
         method: 'GET',
-        url: '/extrato',
+        url: '/extrato/**',
         response: [
             { "conta": "Conta para movimentacoes", "id": 975264, "descricao": "Movimentacao para exclusao", "envolvido": "AAA", "observacao": null, "tipo": "DESP", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "-1500.00", "status": true, "conta_id": 1046814, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
             { "conta": "Conta com movimentacao", "id": 975265, "descricao": "Movimentacao de conta", "envolvido": "BBB", "observacao": null, "tipo": "DESP", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "-1500.00", "status": true, "conta_id": 1046815, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
