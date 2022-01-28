@@ -70,11 +70,31 @@ describe('Should test at functional level', () => {
     })
 
     it('Should Create A Transaction', () => {
+        cy.route({
+            method: 'POST',
+            url: '/transacoes',
+            response: { id: 975263, descricao: "dcwd", envolvido: "evef", observacao: null, tipo: "REC", data_transacao: "2022-01-27T03:00:00.000Z", data_pagamento: "2022-01-27T03:00:00.000Z", valor: "100.00", status: false, conta_id: 1045268, usuario_id: 12136, transferencia_id: null, parcelamento_id: null },
+        }).as('saveTransacoes')
+
+        cy.route({
+            method: 'GET',
+            url: '/extrato/**',
+            response: [
+                { "conta": "Conta para movimentacoes", "id": 975264, "descricao": "Movimentacao para exclusao", "envolvido": "AAA", "observacao": null, "tipo": "DESP", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "-1500.00", "status": true, "conta_id": 1046814, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+                { "conta": "Conta com movimentacao", "id": 975265, "descricao": "Movimentacao de conta", "envolvido": "BBB", "observacao": null, "tipo": "DESP", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "-1500.00", "status": true, "conta_id": 1046815, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+                { "conta": "Conta para saldo", "id": 975266, "descricao": "Movimentacao 1, calculo saldo", "envolvido": "CCC", "observacao": null, "tipo": "REC", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "3500.00", "status": false, "conta_id": 1046816, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+                { "conta": "Conta para saldo", "id": 975267, "descricao": "Movimentacao 2, calculo saldo", "envolvido": "DDD", "observacao": null, "tipo": "DESP", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "-1000.00", "status": true, "conta_id": 1046816, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+                { "conta": "Conta para saldo", "id": 975268, "descricao": "Movimentacao 3, calculo saldo", "envolvido": "EEE", "observacao": null, "tipo": "REC", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "1534.00", "status": true, "conta_id": 1046816, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+                { "conta": "Conta para extrato", "id": 975269, "descricao": "Movimentacao para extrato", "envolvido": "FFF", "observacao": null, "tipo": "DESP", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "-220.00", "status": true, "conta_id": 1046817, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+                { "conta": "Conta para extrato", "id": 975233, "descricao": "Desc", "envolvido": "FFF", "observacao": null, "tipo": "DESP", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "123.00", "status": true, "conta_id": 1046817, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null }
+            ]
+        }).as('extrato')
+
         cy.get(loc.MENU.MOVIMENTACAO).click()
         cy.get(loc.MOVIMENTACAO.DESCRICAO).type('Desc')
         cy.get(loc.MOVIMENTACAO.VALOR).type('123', { force: true })
         cy.get(loc.MOVIMENTACAO.INTERESSADO).type('Inter')
-        cy.get(loc.MOVIMENTACAO.CONTA).select('Conta para movimentacoes')
+        cy.get(loc.MOVIMENTACAO.CONTA).select('Banco')
         cy.get(loc.MOVIMENTACAO.STATUS).click()
         cy.get(loc.MOVIMENTACAO.BTN_SALVAR).click()
         cy.get(loc.MESSAGE).should('contain', 'Movimentação inserida com sucesso!')
