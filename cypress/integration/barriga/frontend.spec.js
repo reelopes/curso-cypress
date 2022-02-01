@@ -185,7 +185,7 @@ describe('Should test at functional level', () => {
         cy.get(loc.MESSAGE).should('contain', 'Movimentação removida com sucesso!')
     })
 
-    it.only('Should Validate Data Sent to Create An Account', () => {
+    it('Should Validate Data Sent to Create An Account', () => {
 
         const reqStub = cy.stub()
 
@@ -224,6 +224,25 @@ describe('Should test at functional level', () => {
             expect(reqStub.args[0][0].request.headers).to.have.property('Authorization')
         })
         cy.get(loc.MESSAGE).should('contain', 'Conta inserida com sucesso!')
+    })
+
+    it.only('Should Test Colors', () => {
+        cy.route({
+            method: 'GET',
+            url: '/extrato/**',
+            response: [
+                { "conta": "Conta para movimentacoes", "id": 975264, "descricao": "Receita Paga", "envolvido": "AAA", "observacao": null, "tipo": "REC", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "-1500.00", "status": true, "conta_id": 1046814, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+                { "conta": "Conta com movimentacao", "id": 975265, "descricao": "Receita Pendente", "envolvido": "BBB", "observacao": null, "tipo": "REC", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "-1500.00", "status": false, "conta_id": 1046815, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+                { "conta": "Conta para saldo", "id": 975266, "descricao": "Despesa Paga", "envolvido": "CCC", "observacao": null, "tipo": "DESP", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "3500.00", "status": true, "conta_id": 1046816, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+                { "conta": "Conta para saldo", "id": 975267, "descricao": "Despesa Pendente", "envolvido": "DDD", "observacao": null, "tipo": "DESP", "data_transacao": "2022-01-27T03:00:00.000Z", "data_pagamento": "2022-01-27T03:00:00.000Z", "valor": "-1000.00", "status": false, "conta_id": 1046816, "usuario_id": 12136, "transferencia_id": null, "parcelamento_id": null },
+            ]
+        }).as('extrato')
+
+        cy.get(loc.MENU.EXTRATO).click()
+        cy.xpath(loc.EXTRATO.FN_XP_LINHA('Receita Paga')).should('have.class', "receitaPaga")
+        cy.xpath(loc.EXTRATO.FN_XP_LINHA('Receita Pendente')).should('have.class', "receitaPendente")
+        cy.xpath(loc.EXTRATO.FN_XP_LINHA('Despesa Paga')).should('have.class', "despesaPaga")
+        cy.xpath(loc.EXTRATO.FN_XP_LINHA('Despesa Pendente')).should('have.class', "despesaPendente")
     })
 
 })
