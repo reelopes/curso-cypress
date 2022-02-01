@@ -245,7 +245,7 @@ describe('Should test at functional level', () => {
         cy.xpath(loc.EXTRATO.FN_XP_LINHA('Despesa Pendente')).should('have.class', "despesaPendente")
     })
 
-    it.only('Should Test The Responsiveness', () => {
+    it('Should Test The Responsiveness', () => {
         cy.get(loc.MENU.HOME).should('exist')
             .and('be.visible')
         cy.viewport(500, 700)

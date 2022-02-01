@@ -1,0 +1,54 @@
+package.json - configurações do projeto
+para criar o package.json rodar npm init -y
+
+./node_modules/.bin/cypress open
+
+Instalar cypress
+npm install cypress@3.6.0
+
+rodar cypress
+npm run cypress:open
+
+ES6
+
+frameworks embutidos: mocha e chai
+
+Win + espaço muda teclado
+
+it.skip - pula execução
+
+it.only - executa só ele. Se tiver 2, executa o ultimo
+
+no cypress a busca por id é representada por #[id].
+
+usar [] quando quiser buscar algum elemento por sua propriedade
+
+ctrl + Shift + k apaga linha
+Alt shift D duplica seleção
+alt set move bloco
+
+Should - retry, não aceita mudar o retorno, mas é mais aninhado ao get
+Then - é possível mudar o retorno e não fica fazendo retry
+
+Maioria dos casos é interessante usar o Then, pois não fica retentando a chamada causando problemas
+
+XPATH
+/ indica qual elemento html quer encontrar - segue navegação hierarquica.
+[] numero da ocorrencia do elemento
+// pega todos os elementos
+@ pega um elemento por sua propriedade
+() para pegar um grupo
+/.. pega elemento um nivel acima
+
+Exemplos:
+/html/body/center/form/input[2]
+(//input[@type='button'][@value='Clique aqui'])[2]
+//table[@id='tabelaUsuarios']//td[contains(., 'Francisco')]/following-sibling::td/input[@value='Clique aqui']
+//table[@id='tabelaUsuarios']//td[contains(., 'Francisco')]/..//input[@type='text']
+//td[contains(., 'Usuario A')]/following-sibling::td[contains(., 'Mestrado')]/..//input[@type='text']
+
+npm run cypress:run -- --spec cypress/integration/xxx.spec.js
+	--headed - deixa assistir a execução
+		--no-exit - deixa assistir a execução e não fecha no final da execução
+	--browser chrome
+	/dir/**/* - executa os teste da pasta (substituir dir).
